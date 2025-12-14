@@ -1,0 +1,43 @@
+---
+title: "Optimizing Next.js for SEO: Reducing Load Times by 30%"
+date: "2025-11-20"
+description: "How I migrated a client-side React app to Next.js SSR and implemented Redis caching to achieve sub-200ms API latency."
+tags: ["Next.js", "Performance", "Redis", "System Design"]
+---
+
+## The Bottleneck
+
+When building a **Bus Booking Platform**, speed isn't just a feature—it's a requirement. Users checking seat availability expect instant results.
+
+Initially, the application relied heavily on Client-Side Rendering (CSR). While the interactivity was good, the **First Contentful Paint (FCP)** was sluggish (over 2.5s). More importantly, search engine crawlers were struggling to index the dynamic route pages for different bus routes.
+
+## The Solution: Server-Side Rendering (SSR)
+
+I refactored the core booking engine to use **Next.js Server-Side Rendering**.
+
+By fetching data on the server *before* sending the HTML to the client, we ensured that:
+1.  **SEO Improved:** Google could immediately read "Mumbai to Pune" bus details.
+2.  **Load Times Dropped:** The page was pre-populated, reducing the "white screen" flash.
+
+### Caching Seat Availability with Redis
+
+Fetching live seat data from the database for every single page load was expensive. To solve this, I implemented a caching layer using **Redis**.
+
+```javascript
+// Pseudo-code of the caching logic I implemented
+async function getBusSeats(routeId) {
+  // 1. Check Redis Cache first (Super fast)
+  const cachedSeats = await redis.get(`seats:${routeId}`);
+  
+  if (cachedSeats) {
+    return JSON.parse(cachedSeats);
+  }
+
+  // 2. If miss, fetch from MongoDB (Slower)
+  const seats = await db.collection('seats').find({ routeId }).toArray();
+
+  // 3. Save to Redis for 60 seconds
+  await redis.set(`seats:${routeId}`, JSON.stringify(seats), 'EX', 60);
+  
+  return seats;
+}

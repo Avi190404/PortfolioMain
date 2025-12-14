@@ -1,0 +1,42 @@
+---
+title: "Automating the Mundane: Syncing Shopify to Google Sheets"
+date: "2025-10-15"
+description: "Eliminating 10+ hours of manual data entry per week by building a custom webhook listener with Google Apps Script."
+tags: ["Automation", "Google Apps Script", "Shopify", "Webhooks"]
+---
+
+## The Problem
+
+Managing an E-commerce store often involves "invisible work." For one project, the operations team was manually copying order details from the Shopify dashboard into a master Google Sheet for inventory tracking.
+
+This process consumed **10+ hours per week** and was prone to human error (typos in addresses, wrong SKU numbers).
+
+## The Automation Architecture
+
+Instead of paying for expensive connector tools like Zapier, I architected a custom solution using **Google Apps Script** (GAS) acting as a webhook receiver.
+
+### The Workflow
+1.  **Trigger:** Customer places an order on Shopify.
+2.  **Webhook:** Shopify sends a JSON payload to my GAS endpoint.
+3.  **Processing:** Script parses the JSON to extract Customer Name, SKU, and Price.
+4.  **Action:** Appends a new row to the Master Sheet and sends a Telegram alert.
+
+```javascript
+// The Google Apps Script that handles the POST request
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Orders');
+  
+  // Extract key details
+  const orderId = data.id;
+  const price = data.total_price;
+  const customer = data.customer.first_name;
+
+  // Append to Google Sheet instantly
+  sheet.appendRow([new Date(), orderId, customer, price]);
+
+  // Send alert to Warehouse Team via Telegram API
+  sendTelegramAlert(`New Order #${orderId} from ${customer}`);
+  
+  return ContentService.createTextOutput("Success");
+}

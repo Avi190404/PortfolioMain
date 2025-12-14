@@ -1,0 +1,27 @@
+---
+title: "Zero Downtime: Hosting n8n on AWS Lightsail"
+date: "2025-12-10"
+description: "How I deployed separate Production and QA instances of n8n to achieve 99.9% uptime and safe workflow testing."
+tags: ["DevOps", "n8n", "AWS", "Docker"]
+---
+
+## The Challenge
+
+At **Ecowoodies**, we relied heavily on automation. However, testing new workflows directly on the production server was risky. One bad node could crash the active lead generation pipeline.
+
+## The Solution
+
+I decided to implement a dual-environment architecture using **AWS Lightsail**.
+
+### 1. Infrastructure Setup
+I provisioned two separate Linux instances:
+1. **Production (Prod):** Only runs verified, stable workflows.
+2. **Quality Assurance (QA):** A sandbox for testing new ideas.
+
+```bash
+# Example Docker command I used to spin up the instance
+docker run -it --rm \
+ --name n8n \
+ -p 5678:5678 \
+ -v ~/.n8n:/home/node/.n8n \
+ n8nio/n8n
