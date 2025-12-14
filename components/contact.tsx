@@ -30,7 +30,6 @@ export function Contact() {
           </Button>
           
           <Button asChild variant="outline" size="lg" className="h-12 px-8">
-            {/* IMPORTANT: You need to put 'resume.pdf' in your 'public' folder */}
             <Link href="/Avi_Resume.pdf" target="_blank" rel="noopener noreferrer">
               <FileText className="mr-2 h-4 w-4" /> Download Resume
             </Link>
