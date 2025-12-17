@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-// Added 'Phone' to imports
 import { Github, Linkedin, Mail, MapPin, Phone, Terminal, Cpu, Globe } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -51,16 +50,18 @@ export function About() {
                 <div className="p-2 bg-secondary rounded-lg">
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
-                <div className="overflow-hidden">
+                {/* FIX: Removed 'overflow-hidden' container */}
+                <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <a href="mailto:avi19042004@gmail.com" className="font-medium hover:underline truncate block">
-                    avi19042004...
+                  {/* FIX: Removed 'truncate', added 'break-all' to ensure it wraps instead of cutting off */}
+                  <a href="mailto:avi19042004@gmail.com" className="font-medium hover:underline break-all">
+                    avi19042004@gmail.com
                   </a>
                 </div>
               </CardContent>
             </Card>
 
-            {/* 2. Phone Card (NEW) */}
+            {/* 2. Phone Card */}
             <Card className="hover:border-primary/50 transition-colors">
               <CardContent className="p-4 flex items-center gap-4">
                 <div className="p-2 bg-secondary rounded-lg">
@@ -68,15 +69,14 @@ export function About() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Phone</p>
-                  {/* REPLACE THIS WITH YOUR REAL NUMBER */}
-                  <a href="tel:+919876543210" className="font-medium hover:underline">
-                    +91 98765 43210
+                  <a href="tel:+918140660571" className="font-medium hover:underline">
+                    +91 81406 60571
                   </a>
                 </div>
               </CardContent>
             </Card>
 
-            {/* 3. Location Card (Full Width on mobile, spanning 2 cols if needed) */}
+            {/* 3. Location Card */}
             <Card className="hover:border-primary/50 transition-colors sm:col-span-2">
               <CardContent className="p-4 flex items-center gap-4">
                 <div className="p-2 bg-secondary rounded-lg">
