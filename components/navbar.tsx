@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
-import { ModeToggle } from "@/components/toggleButton"; // Make sure this matches your file name (e.g., toggleButton)
+import { ModeToggle } from "@/components/toggleButton"; 
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
@@ -34,7 +34,7 @@ export function Navbar() {
     <motion.nav
       variants={{
         visible: { y: 0 },
-        hidden: { y: "-140%" }, // FIX: Increased to 140% to account for the top-6 margin
+        hidden: { y: "-140%" }, 
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -49,20 +49,31 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Center: Navigation Links (Hidden on mobile for space) */}
+        {/* Center: Navigation Links */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+          {/* NEW: About Link */}
+          <Link
+            href="/#about"
+            className="transition-colors hover:text-primary text-muted-foreground"
+          >
+            About
+          </Link>
+
           <Link
             href="/#experience"
             className="transition-colors hover:text-primary text-muted-foreground"
           >
             Experience
           </Link>
+
+          {/* UPDATED: Points to the new separate page */}
           <Link
-            href="/#projects"
+            href="/projects" 
             className="transition-colors hover:text-primary text-muted-foreground"
           >
             Projects
           </Link>
+
           <Link
             href="/blog"
             className="transition-colors hover:text-primary text-muted-foreground"
