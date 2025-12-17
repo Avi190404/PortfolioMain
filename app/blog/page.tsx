@@ -46,17 +46,24 @@ export default function BlogPage() {
                   <p className="text-muted-foreground mb-4 line-clamp-2">
                     {post.description}
                   </p>
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="flex gap-2">
+                  
+                  {/* FIX: Improved Layout for Mobile */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-4">
+                    
+                    {/* 1. Allow tags to wrap on small screens */}
+                    <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-xs">
                           {tag}
                         </Badge>
                       ))}
                     </div>
-                    <span className="flex items-center text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+
+                    {/* 2. Make "Read Article" visible on mobile, hover effect only on desktop */}
+                    <span className="flex items-center text-sm font-medium text-primary transition-opacity opacity-100 sm:opacity-0 sm:group-hover:opacity-100">
                       Read Article <ArrowRight className="ml-1 h-4 w-4" />
                     </span>
+                    
                   </div>
                 </CardContent>
               </Card>
