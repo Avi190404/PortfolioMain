@@ -25,6 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground relative`}>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6D3L0KSYB"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-L6D3L0KSYB');
+        </script>
         
         {/* ADDED: Schema Markup for Google Knowledge Graph */}
         <script
