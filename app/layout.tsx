@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+// 1. Import the Script component from Next.js
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({ 
@@ -12,9 +14,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  // ... (keep your existing metadata) ...
   title: "Avi Patel | Full-Stack Developer",
   description: "Portfolio of Avi Patel...",
+  // ... (keep your existing metadata) ...
 };
 
 export default function RootLayout({
@@ -26,17 +28,23 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground relative`}>
 
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6D3L0KSYB"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-L6D3L0KSYB');
-        </script>
+        {/* 2. Google Analytics (Corrected for Next.js) */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-L6D3L0KSYB"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-L6D3L0KSYB');
+          `}
+        </Script>
         
-        {/* ADDED: Schema Markup for Google Knowledge Graph */}
-        <script
+        {/* 3. Schema Markup (Optimized) */}
+        <Script
+          id="json-ld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -72,7 +80,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* GLOBAL BACKGROUND GRID: Fixed position so it covers the whole site */}
+          {/* GLOBAL BACKGROUND GRID */}
           <div className="fixed inset-0 w-full h-full bg-grid-pattern opacity-[0.05] pointer-events-none z-[-1]" />
           
           <Navbar />
