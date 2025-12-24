@@ -1,0 +1,44 @@
+---
+title: "Architecting a Modern ERP: Why NestJS & Supabase?"
+date: "2025-12-24"
+description: "Designing a scalable Enterprise Resource Planning system using a Modular Monolith approach with NestJS, Next.js, and PostgreSQL."
+tags: ["System Design", "NestJS", "Supabase", "Next.js"]
+---
+
+Building an ERP (Enterprise Resource Planning) system is the ultimate test of full-stack architecture. Unlike a simple CRUD app, an ERP deals with complex, interconnected domains—Accounting, Inventory, CRM, and HR—where data integrity and performance are non-negotiable.
+
+For my latest project, I decided to move away from the traditional MERN structure and adopt a more rigid, enterprise-grade stack. Here is the architecture breakdown of my new ERP system.
+
+## The Core Stack
+
+### 1. The Backend: NestJS (Structured & Scalable)
+While Express.js is great for quick MVPs, an ERP requires structure. I chose **NestJS** because:
+* **Modular Architecture:** I can strictly separate domains (e.g., the `InventoryModule` shouldn't directly touch the `PayrollModule`).
+* **Dependency Injection:** Makes testing complex business logic (like tax calculations) much easier.
+* **TypeScript First:** Strict typing is essential when dealing with financial data.
+
+### 2. The Database: Supabase (PostgreSQL on Steroids)
+An ERP lives or dies by its database. NoSQL (MongoDB) was not an option here.
+* **Relational Integrity:** Accounting demands foreign keys and ACID transactions. If an invoice is deleted, related ledger entries must handle that strictly.
+* **Real-time Subscriptions:** Supabase allows me to push live inventory updates to the frontend via WebSockets without setting up a custom socket server.
+* **Auth:** Built-in JWT handling saves weeks of development time.
+
+### 3. The Frontend: Next.js (Performance & DX)
+I chose **Next.js (App Router)** over a standard React SPA for several reasons:
+* **Server Components:** I can fetch heavy dashboard data (like "Total Revenue YTD") directly on the server, reducing the JavaScript load on the client.
+* **Layouts:** Next.js nested layouts make it incredibly easy to manage complex ERP sidebars and persistent navigation states.
+* **Routing:** File-system based routing simplifies the massive structure of an ERP (e.g., `/dashboard/finance/invoices/[id]`).
+
+## The Architecture: Modular Monolith
+
+Microservices are trendy, but for an ERP starting from scratch, they are often overkill. I am opting for a **Modular Monolith**.
+
+```ts
+// Example: Strict Module Boundaries in NestJS
+@Module({
+  imports: [TypeOrmModule.forFeature([Invoice])],
+  providers: [InvoicesService],
+  controllers: [InvoicesController],
+  exports: [InvoicesService], // Only expose what is necessary
+})
+export class InvoicesModule {}
