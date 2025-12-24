@@ -5,33 +5,147 @@ description: "Designing a scalable Enterprise Resource Planning system using a M
 tags: ["System Design", "NestJS", "Supabase", "Next.js"]
 ---
 
-Building an ERP (Enterprise Resource Planning) system is the ultimate test of full-stack architecture. Unlike a simple CRUD app, an ERP deals with complex, interconnected domains—Accounting, Inventory, CRM, and HR—where data integrity and performance are non-negotiable.
+# Architecting a Modern ERP: Why NestJS, Next.js & Supabase?
 
-For my latest project, I decided to move away from the traditional MERN structure and adopt a more rigid, enterprise-grade stack. Here is the architecture breakdown of my new ERP system.
+Designing an Enterprise Resource Planning (ERP) system is the ultimate boss fight in backend engineering. It’s not just a collection of CRUD modules — it's the backbone of business operations. ERPs must guarantee **data integrity**, **accuracy**, **auditability**, and **performance** across dozens of tightly connected domains.
 
-## The Core Stack
+In this blog, I’ll go deep into the architectural decisions behind my new ERP system and explain why I confidently moved away from MERN and toward a **Modular Monolith built with NestJS, Supabase, and Next.js**.
 
-### 1. The Backend: NestJS (Structured & Scalable)
-While Express.js is great for quick MVPs, an ERP requires structure. I chose **NestJS** because:
-* **Modular Architecture:** I can strictly separate domains (e.g., the `InventoryModule` shouldn't directly touch the `PayrollModule`).
-* **Dependency Injection:** Makes testing complex business logic (like tax calculations) much easier.
-* **TypeScript First:** Strict typing is essential when dealing with financial data.
+---
 
-### 2. The Database: Supabase (PostgreSQL on Steroids)
-An ERP lives or dies by its database. NoSQL (MongoDB) was not an option here.
-* **Relational Integrity:** Accounting demands foreign keys and ACID transactions. If an invoice is deleted, related ledger entries must handle that strictly.
-* **Real-time Subscriptions:** Supabase allows me to push live inventory updates to the frontend via WebSockets without setting up a custom socket server.
-* **Auth:** Built-in JWT handling saves weeks of development time.
+# 🧩 Why ERP Systems Are Hard
+ERPs must handle:
+- Accounting
+- Inventory management
+- HR & payroll
+- CRM
+- Sales & purchasing
+- Manufacturing and supply chain
 
-### 3. The Frontend: Next.js (Performance & DX)
-I chose **Next.js (App Router)** over a standard React SPA for several reasons:
-* **Server Components:** I can fetch heavy dashboard data (like "Total Revenue YTD") directly on the server, reducing the JavaScript load on the client.
-* **Layouts:** Next.js nested layouts make it incredibly easy to manage complex ERP sidebars and persistent navigation states.
-* **Routing:** File-system based routing simplifies the massive structure of an ERP (e.g., `/dashboard/finance/invoices/[id]`).
+Each of these domains has **rules, dependencies, workflows, and consequences**.
 
-## The Architecture: Modular Monolith
+For example:
+- If an invoice is deleted, the ledger must still balance.
+- If stock is adjusted, the audit trail can't disappear.
+- If a salary is processed, tax calculations must remain traceable.
+- If purchase orders are updated, vendor balances must remain accurate.
 
-Microservices are trendy, but for an ERP starting from scratch, they are often overkill. I am opting for a **Modular Monolith**.
+This requires an architecture that enforces strict rules — something MERN cannot do reliably.
+
+---
+
+# ❌ Why MERN Falls Short for ERP
+The MERN stack is excellent for startups and lightweight applications. But when building an ERP, it hits major roadblocks.
+
+## 1. MongoDB’s Flexibility Becomes a Liability
+ERP systems need:
+- Strict schemas
+- Transactions
+- Foreign keys
+- Deterministic relationships
+
+MongoDB allows flexible data structures — great for prototypes, terrible for complex finance.
+
+**Problems:**
+- No enforced schema → accidental mismatches
+- Complex joins become expensive
+- Lack of relational guarantees
+- Harder to maintain ledger accuracy
+
+Accounting cannot run on “eventual consistency.”
+
+---
+
+## 2. Express.js Provides No Opinionated Architecture
+Express gives developers full freedom — which is **dangerous** for business-critical systems.
+
+ERP needs:
+- Rigid module structure
+- Layered architecture
+- Domain boundaries
+- Dependency injection
+- Validation pipelines
+- Guards & interceptors
+
+Express gives none of these out of the box.
+
+This results in projects that scale horizontally in features but not vertically in quality.
+
+---
+
+## 3. React SPA Is Not Ideal for Enterprise Dashboards
+CSR-based apps suffer from:
+- Slow initial loads
+- Large JavaScript bundles
+- SEO limitations
+- Complex security considerations
+
+ERP dashboards need blazing-fast **server-side rendering** and **secure data fetching**, making Next.js a superior choice.
+
+---
+
+# ✅ The Tech Stack That Solves ERP Problems
+After exploring different architectures, I arrived at a powerful trio:
+
+# 1. 🦅 NestJS — The Backbone of the ERP
+NestJS provides:
+- **Modules** for strict domain separation
+- **Dependency injection** for testable logic
+- **Decorators** for validation and transformation
+- **Guards & interceptors** for security and monitoring
+- **First-class TypeScript support**
+
+This structure ensures every business domain remains tidy, predictable, and maintainable.
+
+---
+
+# 2. 🐘 Supabase (PostgreSQL) — The Heart of the ERP
+An ERP is only as strong as its database.
+
+Supabase + PostgreSQL provides:
+- **ACID transactions** — essential for accounting
+- **Foreign keys** for relational accuracy
+- **Triggers & functions** for automated audits
+- **Views** for reporting
+- **Materialized views** for analytics
+- **Row-level security** for domain access
+- **Real-time WebSocket updates** out of the box
+
+This combination gives reliability that NoSQL stacks simply cannot match.
+
+---
+
+# 3. ⚛️ Next.js — The Face of the ERP
+I chose the App Router version of Next.js because:
+- **Server Components** reduce client-side JS load
+- **SSR** boosts performance for dashboards
+- **File-based routing** simplifies module organization
+- **Layouts** allow persistent navigation structures
+
+ERP UIs are complex. Next.js handles this complexity gracefully.
+
+---
+
+# 🏛️ Modular Monolith Architecture — The Middle Path
+Microservices are powerful but expensive:
+- More DevOps
+- More maintenance
+- More overhead
+- More orchestration
+
+For a new ERP system, they are unnecessary.
+
+A **Modular Monolith** gives the best of both worlds:
+- Strong boundaries between modules
+- One deployable unit
+- Easy debugging
+- Lower cost
+- Future-safe (can split into microservices later)
+
+---
+
+# 📦 Folder Structure Example
+Each domain lives inside its own NestJS module.
 
 ```ts
 // Example: Strict Module Boundaries in NestJS
@@ -39,6 +153,54 @@ Microservices are trendy, but for an ERP starting from scratch, they are often o
   imports: [TypeOrmModule.forFeature([Invoice])],
   providers: [InvoicesService],
   controllers: [InvoicesController],
-  exports: [InvoicesService], // Only expose what is necessary
+  exports: [InvoicesService], // Only expose what's necessary
 })
 export class InvoicesModule {}
+```
+
+This pattern ensures financial logic never leaks into HR or Inventory or vice-versa.
+
+---
+
+# 📊 When Does This Architecture Shine?
+This stack excels when building apps that require:
+- Heavy relational logic
+- Strict audit trails
+- Domain encapsulation
+- Consistent business workflows
+- Real-time updates
+- Secure data models
+
+Perfect use cases:
+- ERP systems
+- Inventory management
+- Accounting platforms
+- HR systems
+- CRM applications
+- POS integrations
+
+---
+
+# 🧠 Why Not Microservices from Day 1?
+Microservices look appealing, but they introduce challenges:
+- Distributed transactions
+- Complex syncing
+- More repos
+- More maintenance
+- Harder refactoring
+- DevOps overhead
+
+Start with a modular monolith. Split later **only if necessary**.
+
+---
+
+# 🏁 Final Thoughts
+An ERP is not just software — it’s the digital nervous system of a company. It demands stability, clarity, and correctness.
+
+That’s why I chose:
+- **NestJS** for backend structure
+- **Supabase PostgreSQL** for relational power
+- **Next.js** for frontend performance
+- **Modular Monolith** as the architectural foundation
+
+This stack gives enterprise-level reliability with modern developer experience.
