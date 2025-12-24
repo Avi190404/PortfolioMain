@@ -25,6 +25,38 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground relative`}>
+        
+        {/* ADDED: Schema Markup for Google Knowledge Graph */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Avi Patel",
+              "url": "https://avi-dev.in",
+              "image": "https://avi-dev.in/opengraph-image.jpg",
+              "sameAs": [
+                "https://github.com/avi19042004",
+                "https://linkedin.com/in/avi-patel-6170b6238",
+                "https://x.com/AviPatel1297020",
+                "https://www.instagram.com/avi_19044"
+              ],
+              "jobTitle": "Full Stack Developer",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "Freelance"
+              },
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Surat",
+                "addressRegion": "Gujarat",
+                "addressCountry": "IN"
+              }
+            }),
+          }}
+        />
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
