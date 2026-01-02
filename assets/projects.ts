@@ -1,14 +1,11 @@
 import { Bus, ShoppingCart, FileSpreadsheet, Zap } from "lucide-react";
 import React from "react";
 
-// Define the shape of a Project
 export type Project = {
   title: string;
   description: string;
   tags: string[];
   stats: string;
-  // We need to store the icon name or component. 
-  // For simplicity in this file, we return the component directly.
   icon: React.ReactNode; 
   link?: string; 
   github: string;
