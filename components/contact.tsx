@@ -16,10 +16,10 @@ export function Contact() {
         className="space-y-6"
       >
         <h2 className="text-3xl md:text-5xl font-bold tracking-tighter">
-          Ready to Automate Your Workflow?
+          Ready to Build Scalable Solutions
         </h2>
         <p className="text-muted-foreground text-lg max-w-[600px] mx-auto">
-          Whether you need a scalable MERN stack application or an n8n automation pipeline to cut costs, I'm ready to help.
+          From high-performance MERN stack applications to cost-cutting automation pipelines, let's engineer the perfect solution for your business.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
