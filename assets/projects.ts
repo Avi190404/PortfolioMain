@@ -1,4 +1,4 @@
-import { Bus, ShoppingCart, FileSpreadsheet, Zap, Server, Bot } from "lucide-react";
+import { Bus, ShoppingCart, FileSpreadsheet, Zap } from "lucide-react";
 import React from "react";
 
 // Define the shape of a Project
@@ -21,8 +21,8 @@ export const allProjects: Project[] = [
     tags: ["Next.js", "MongoDB", "Razorpay", "Redis"],
     stats: "30% Faster Load Time",
     icon: React.createElement(Bus, { className: "h-6 w-6 text-blue-500" }),
-    link: "https://your-bus-app.com",
-    github: "https://github.com/avi19042004/bus-booking",
+    link: "https://www.croossa.com/",
+    github: "https://github.com/croossa/Bus",
   },
   {
     title: "Full Stack E-Commerce",
@@ -50,23 +50,5 @@ export const allProjects: Project[] = [
     icon: React.createElement(Zap, { className: "h-6 w-6 text-yellow-500" }),
     link: "https://portfolio.avi-dev.in",
     github: "https://github.com/avi19042004/portfolio",
-  },
-  {
-    title: "Homelab Dashboard",
-    description: "Self-hosted dashboard for managing Docker containers and Pterodactyl.",
-    tags: ["Docker", "Linux", "Nginx"],
-    stats: "100% Uptime",
-    icon: React.createElement(Server, { className: "h-6 w-6 text-purple-500" }),
-    link: "",
-    github: "https://github.com/avi19042004/homelab-config",
-  },
-  {
-    title: "Telegram Bot",
-    description: "A bot that notifies the team about new server errors.",
-    tags: ["Node.js", "Telegram API", "Axios"],
-    stats: "Instant Alerts",
-    icon: React.createElement(Bot, { className: "h-6 w-6 text-blue-400" }),
-    link: "", 
-    github: "https://github.com/avi19042004/telegram-bot",
   },
 ];
