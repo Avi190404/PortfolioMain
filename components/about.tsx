@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, MapPin, Phone, Terminal, Cpu, Globe } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, Phone, Database, Layout, Globe, Cpu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,18 +23,18 @@ export function About() {
           </h2>
           <div className="prose dark:prose-invert text-muted-foreground text-lg leading-relaxed">
             <p>
-              I'm a <strong>Full Stack Developer</strong> and <strong>Automation Engineer</strong> based in <span className="text-primary font-semibold">Surat, India</span>. 
+              I'm a <strong>Full Stack Developer</strong> and <strong>Automation Engineer</strong> based in <span className="text-primary font-semibold">Surat, India</span>. My core expertise lies in the <strong>MERN Stack</strong> (MongoDB, Express, React, Node.js).
             </p>
             <p className="mt-4">
-              My journey started with a curiosity for how servers work, leading me to build my own <strong>Homelab</strong> and experiment with <strong>Pterodactyl Panel</strong>. Today, I bridge the gap between complex backend logic and user-friendly frontend designs.
+              My journey started with a simple curiosity: <strong>how do websites actually work behind the scenes?</strong> That question pushed me to master full-stack development. Today, I am taking those skills further by adopting <strong>NestJS and Next.js</strong> to build scalable, enterprise-grade architectures.
             </p>
             <p className="mt-4">
-              When I'm not coding scalable MERN applications, you can find me:
+              Currently, I am focused on:
             </p>
             <ul className="list-disc pl-5 mt-2 space-y-1">
-              <li>Hunting for bugs (Ethical Hacking enthusiast 🔐).</li>
-              <li>Optimizing automated workflows in n8n ⚡.</li>
-              <li>Hosting Minecraft servers for the community 🎮.</li>
+              <li>Architecting complex SaaS & ERP systems.</li>
+              <li>Optimizing database performance with Prisma & Redis.</li>
+              <li>Exploring Ethical Hacking to write secure code.</li>
             </ul>
           </div>
         </div>
@@ -50,10 +50,8 @@ export function About() {
                 <div className="p-2 bg-secondary rounded-lg">
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
-                {/* FIX: Removed 'overflow-hidden' container */}
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  {/* FIX: Removed 'truncate', added 'break-all' to ensure it wraps instead of cutting off */}
                   <a href="mailto:avi19042004@gmail.com" className="font-medium hover:underline break-all">
                     avi19042004@gmail.com
                   </a>
@@ -107,13 +105,13 @@ export function About() {
           {/* Mini "What I Do" Tags */}
           <div className="flex flex-wrap gap-2 mt-6">
              <div className="flex items-center gap-1.5 px-3 py-1 bg-secondary/50 rounded-full text-sm">
-                <Terminal className="h-3 w-3" /> System Admin
+                <Layout className="h-3 w-3" /> MERN Stack
+             </div>
+             <div className="flex items-center gap-1.5 px-3 py-1 bg-secondary/50 rounded-full text-sm">
+                <Globe className="h-3 w-3" /> Enterprise Web (Next.js/NestJS)
              </div>
              <div className="flex items-center gap-1.5 px-3 py-1 bg-secondary/50 rounded-full text-sm">
                 <Cpu className="h-3 w-3" /> Automation
-             </div>
-             <div className="flex items-center gap-1.5 px-3 py-1 bg-secondary/50 rounded-full text-sm">
-                <Globe className="h-3 w-3" /> Web Development
              </div>
           </div>
         </div>
