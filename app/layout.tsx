@@ -14,10 +14,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 // --- UPDATED METADATA SECTION ---
 export const metadata: Metadata = {
-  // 1. Base URL: Solves "missing domain" issues
-  metadataBase: new URL('https://avi-dev.in'),
+  metadataBase: new URL('https://www.avi-dev.in'),
 
-  // 2. Canonical Configuration: Solves "Duplicate Content" & "WWW vs non-WWW"
   alternates: {
     canonical: '/',
     languages: {
@@ -25,26 +23,23 @@ export const metadata: Metadata = {
     },
   },
 
-  // 3. Optimized Title: Solves "Title too short" (Rec: 50-60 chars)
   title: {
     default: "Avi Patel | Full Stack Developer in Surat | MERN & AI Portfolio",
-    template: "%s | Avi Patel" // Allows sub-pages to look like "Projects | Avi Patel"
+    template: "%s | Avi Patel"
   },
 
-  // 4. Optimized Description: Solves "Description too short" (Rec: 150-160 chars)
   description: "Portfolio of Avi Patel, a Full Stack Developer and Ethical Hacking enthusiast based in Surat, India. Specializing in MERN Stack, Next.js, Deep Learning, and ERP systems.",
 
-  // 5. Open Graph: Better social sharing (LinkedIn/Twitter preview)
   openGraph: {
     title: "Avi Patel | Full Stack Developer in Surat",
     description: "Building scalable web apps with Next.js and secure backends. Check out my projects in Deep Learning and Bug Bounty hunting.",
-    url: 'https://avi-dev.in',
+    url: 'https://www.avi-dev.in',
     siteName: 'Avi Patel Portfolio',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: 'https://avi-dev.in/opengraph-image.jpg', // Ensure this image exists in your public folder
+        url: 'https://www.avi-dev.in/opengraph-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Avi Patel Portfolio Preview',
@@ -52,8 +47,7 @@ export const metadata: Metadata = {
     ],
   },
   
-  // 6. Keywords: Helps with "Deep Learning" and "Bug Bounty" targeting
-  keywords: ["Full Stack Developer", "MERN Stack", "Next.js", "Deep Learning", "Ethical Hacking", "Surat", "Web Developer India", "ERP Systems"],
+  keywords: ["Full Stack Developer", "MERN Stack", "Next.js", "Deep Learning", "Ethical Hacking", "Surat", "Web Developer", "ERP Systems", "Avi", "Avi Patel"],
 };
 
 export default function RootLayout({
@@ -88,8 +82,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               "name": "Avi Patel",
-              "url": "https://avi-dev.in",
-              "image": "https://avi-dev.in/opengraph-image.jpg",
+              "url": "https://www.avi-dev.in",
+              "image": "https://www.avi-dev.in/opengraph-image.jpg",
               "sameAs": [
                 "https://github.com/avi19042004",
                 "https://linkedin.com/in/avi-patel-6170b6238",
