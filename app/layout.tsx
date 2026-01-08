@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.avi-dev.in/opengraph-image.png',
+        url: 'https://www.avi-dev.in/opengraph-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Avi Patel Portfolio Preview',
@@ -83,7 +83,7 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Avi Patel",
               "url": "https://www.avi-dev.in",
-              "image": "https://www.avi-dev.in/opengraph-image.png",
+              "image": "https://www.avi-dev.in/opengraph-image.jpg",
               "sameAs": [
                 "https://github.com/avi19042004",
                 "https://linkedin.com/in/avi-patel-6170b6238",
