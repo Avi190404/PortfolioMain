@@ -63,34 +63,10 @@ const tradeApiUrl = busApiUrl.replace(
 );
 ```
 
-### The Discrepancy
-
-I assumed the naming convention was consistent between environments.  
-It was not.
-
-<div className="overflow-x-auto my-6 rounded-lg border border-border">
-  <table className="min-w-full text-left text-sm">
-    <thead className="bg-muted/50">
-      <tr>
-        <th className="p-3 font-medium text-muted-foreground border-b border-border">Environment</th>
-        <th className="p-3 font-medium text-muted-foreground border-b border-border">Bus API Endpoint</th>
-        <th className="p-3 font-medium text-muted-foreground border-b border-border">Trade API Endpoint</th>
-      </tr>
-    </thead>
-    <tbody className="divide-y divide-border">
-      <tr className="bg-card hover:bg-muted/50 transition-colors">
-        <td className="p-3 font-medium text-foreground">TEST</td>
-        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/BusHost/...</code></td>
-        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/tradehost/...</code></td>
-      </tr>
-      <tr className="bg-card hover:bg-muted/50 transition-colors">
-        <td className="p-3 font-medium text-foreground">LIVE</td>
-        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/BusHost/...</code></td>
-        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/Trade/...</code></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| Environment | Bus API Endpoint | Trade API Endpoint |
+| :--- | :--- | :--- |
+| **TEST** | `/BusHost/...` | `/tradehost/...` |
+| **LIVE** | `/BusHost/...` | `/Trade/...` |
 
 In Production, the endpoint was `/Trade/` (capital T, no “host”).  
 Because my code expected `/tradehost/`, the `.replace()` produced a malformed URL.
