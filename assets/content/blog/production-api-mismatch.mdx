@@ -68,11 +68,29 @@ const tradeApiUrl = busApiUrl.replace(
 I assumed the naming convention was consistent between environments.  
 It was not.
 
-| Environment | Bus API Endpoint | Trade API Endpoint |
-| :--- | :--- | :--- |
-| **TEST** | `/BusHost/...` | `/tradehost/...` |
-| **LIVE** | `/BusHost/...` | `/Trade/...` |
-
+<div className="overflow-x-auto my-6">
+  <table className="min-w-full text-left border-collapse border border-gray-300">
+    <thead>
+      <tr className="bg-gray-100">
+        <th className="border p-2">Environment</th>
+        <th className="border p-2">Bus API Endpoint</th>
+        <th className="border p-2">Trade API Endpoint</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="border p-2 font-bold">TEST</td>
+        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/BusHost/...</code></td>
+        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/tradehost/...</code></td>
+      </tr>
+      <tr>
+        <td className="border p-2 font-bold">LIVE</td>
+        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/BusHost/...</code></td>
+        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/Trade/...</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 In Production, the endpoint was `/Trade/` (capital T, no “host”).  
 Because my code expected `/tradehost/`, the `.replace()` produced a malformed URL.
