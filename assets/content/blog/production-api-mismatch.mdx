@@ -68,33 +68,25 @@ const tradeApiUrl = busApiUrl.replace(
 I assumed the naming convention was consistent between environments.  
 It was not.
 
-<div className="overflow-x-auto my-6 rounded-lg border border-gray-300 dark:border-gray-700">
-  <table className="min-w-full text-left border-collapse text-sm">
-    <thead>
-      <tr className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-        <th className="border-b border-gray-300 dark:border-gray-700 p-3 font-semibold">Environment</th>
-        <th className="border-b border-gray-300 dark:border-gray-700 p-3 font-semibold">Bus API Endpoint</th>
-        <th className="border-b border-gray-300 dark:border-gray-700 p-3 font-semibold">Trade API Endpoint</th>
+<div className="overflow-x-auto my-6 rounded-lg border border-border">
+  <table className="min-w-full text-left text-sm">
+    <thead className="bg-muted/50">
+      <tr>
+        <th className="p-3 font-medium text-muted-foreground border-b border-border">Environment</th>
+        <th className="p-3 font-medium text-muted-foreground border-b border-border">Bus API Endpoint</th>
+        <th className="p-3 font-medium text-muted-foreground border-b border-border">Trade API Endpoint</th>
       </tr>
     </thead>
-    <tbody className="text-gray-700 dark:text-gray-300">
-      <tr className="border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900/50">
-        <td className="p-3 font-bold text-gray-900 dark:text-white">TEST</td>
-        <td className="p-3">
-          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/BusHost/...</code>
-        </td>
-        <td className="p-3">
-          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/tradehost/...</code>
-        </td>
+    <tbody className="divide-y divide-border">
+      <tr className="bg-card hover:bg-muted/50 transition-colors">
+        <td className="p-3 font-medium text-foreground">TEST</td>
+        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/BusHost/...</code></td>
+        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/tradehost/...</code></td>
       </tr>
-      <tr>
-        <td className="p-3 font-bold text-gray-900 dark:text-white">LIVE</td>
-        <td className="p-3">
-          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/BusHost/...</code>
-        </td>
-        <td className="p-3">
-          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/Trade/...</code>
-        </td>
+      <tr className="bg-card hover:bg-muted/50 transition-colors">
+        <td className="p-3 font-medium text-foreground">LIVE</td>
+        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/BusHost/...</code></td>
+        <td className="p-3"><code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">/Trade/...</code></td>
       </tr>
     </tbody>
   </table>
