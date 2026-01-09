@@ -1,0 +1,144 @@
+---
+title: "The 'Money Gone, No Ticket' Bug: Debugging a Critical API Failure in Production"
+date: "2025-01-09"
+description: "How a subtle difference between Test and Live API endpoints caused a critical failure on launch day, and how I fixed it."
+tags: ["Next.js", "Debugging", "API Integration", "Backend"]
+---
+
+## The Nightmare Scenario
+
+It is every developer's worst fear.
+
+I had just deployed **[Croossa](https://www.croossa.com)**, a bus booking platform I built for a client. We had spent weeks in the “UAT” (User Acceptance Testing) phase. Every test case was green:
+
+1. Search for a bus? ✅  
+2. Select a seat? ✅  
+3. Pay via Razorpay? ✅  
+4. **Generate Ticket?** ✅  
+
+We flipped the switch to **Production**. The first real customer came in, paid for their ticket, and the money was deducted from their bank account.
+
+But on our screen? **“Booking Failed.”**
+
+No ticket was generated.  
+The user was angry, the client was panicked, and I had zero logs explaining why.
+
+---
+
+## The Investigation
+
+Since the app was deployed on Vercel Serverless functions, my first instinct was to check runtime logs. I saw a generic `500 Internal Server Error`, but no specific error message from the Bus Provider’s API.
+
+I tried to reproduce it locally, but **everything worked perfectly on localhost.**
+
+This is the most frustrating type of bug: **the “Works on My Machine” error.**
+
+I finally inspected the network traffic using DevTools during a failed production transaction. I noticed the request to the Payment Confirmation endpoint (`AddPayment`) was returning a **404 Not Found**.
+
+---
+
+## The Root Cause: A Dangerous Shortcut
+
+The Bus Provider API has two main services:
+
+1. **Bus API:** For search and seat maps  
+2. **Trade API:** For payments and ledgers  
+
+To save time, I hadn’t created a separate environment variable for the Trade API.  
+Instead, I was dynamically generating it by replacing part of the Bus API string.
+
+Here is the code I wrote, which worked perfectly in the **Test Environment**:
+
+```javascript
+// ❌ The Problematic Code
+// I assumed the Live URL structure would mirror the Test URL structure.
+
+const busApiUrl = process.env.API_URL; 
+// e.g., http://uat.etrav.in/BusHost/BusAPIService.svc
+
+// My logic: Just swap "BusHost" with "tradehost"
+const tradeApiUrl = busApiUrl.replace(
+  "BusHost/BusAPIService.svc",
+  "tradehost/TradeAPIService.svc"
+);
+```
+
+### The Discrepancy
+
+I assumed the naming convention was consistent between environments.  
+It was not.
+
+| Environment | Bus API Endpoint | Trade API Endpoint |
+|------------|------------------|---------------------|
+| **TEST**   | `/BusHost/...`   | `/tradehost/...`    |
+| **LIVE**   | `/BusHost/...`   | `/Trade/...`        |
+
+In Production, the endpoint was `/Trade/` (capital T, no “host”).  
+Because my code expected `/tradehost/`, the `.replace()` produced a malformed URL.
+
+The server hit a non-existent URL, got a 404, and crashed the booking process — **after the payment was already captured.**
+
+---
+
+## The Fix: Explicit Over Implicit
+
+The fix was simple but important.
+
+I removed all string manipulation logic and defined both URLs explicitly in my environment variables:
+
+```javascript
+// ✅ The Robust Solution
+// Don't guess the URL. Configure it.
+
+const busApiUrl = process.env.BUS_API_URL;
+const tradeApiUrl = process.env.TRADE_API_URL;
+
+if (!busApiUrl || !tradeApiUrl) {
+  throw new Error("Missing API Configuration");
+}
+```
+
+---
+
+## Environment-Specific Configuration
+
+Now, in my `.env.production` file, I set the exact live Trade API URL (`/Trade/`).  
+In `.env.local`, I set the test Trade API URL (`/tradehost/`).
+
+No assumptions. No replacements. No surprises.
+
+---
+
+## Lessons Learned
+
+### **1. Never Assume Consistency**
+
+Third-party APIs often evolve over time with inconsistent naming conventions.  
+Just because the Test environment uses camelCase doesn’t mean Production won’t use PascalCase.
+
+---
+
+### **2. Log Everything**
+
+If I had logged the generated `tradeApiUrl` in production, I would have spotted the issue instantly.  
+Always log critical external requests.
+
+---
+
+### **3. Fail Safely**
+
+I updated the payment logic so that if ticket generation fails:
+
+- The system automatically triggers a refund, **or**
+- Alerts an admin immediately.
+
+No more “money gone, no ticket” disasters.
+
+---
+
+This bug cost me a few hours of sleep, but it taught me something priceless:
+
+> **Configuration is always safer than clever code.**
+
+👉 **Check out the live platform (now bug-free):**  
+https://www.croossa.com
