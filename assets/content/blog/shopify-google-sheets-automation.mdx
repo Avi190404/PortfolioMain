@@ -1,0 +1,139 @@
+---
+title: "Zero-Cost ERP: Automating Shopify Orders with Google Sheets & Telegram"
+date: "2025-10-15"
+description: "How I built a complete order management system for a Fiverr client using Google Apps Script, bypassing expensive SaaS tools."
+tags: ["Google Apps Script", "Shopify API", "Automation", "Freelancing"]
+---
+
+## The Client's Problem
+
+I recently worked with a client on **Fiverr** who ran a growing Shopify store. They were drowning in manual work:
+1.  Copying order details to Excel manually.
+2.  Manually saving customer numbers to send WhatsApp updates.
+3.  Checking the Shopify dashboard constantly for new orders.
+
+They looked at "Enterprise ERP" tools, but they were too expensive and complex. They asked me: *"Can we just do this in Google Sheets?"*
+
+## The Solution
+
+I built a custom automation using **Google Apps Script** that turns a simple Google Sheet into a powerful backend. Since the client's order volume was manageable, we didn't need a complex database or pagination logic—**Google Sheets was the perfect lightweight database.**
+
+Here is the architecture of the system I delivered:
+
+### 1. Real-Time Order Sync (Shopify API)
+Instead of manual entry, I wrote a script that hits the Shopify API, fetches new orders, and appends them to the sheet automatically. It handles data cleaning and duplication checks instantly.
+
+### 2. Instant Telegram Notifications
+The client wanted to know about sales immediately, even when away from their laptop. I integrated the **Telegram Bot API** to push alerts directly to their phone.
+
+```javascript
+// Actual code from the project
+function sendTelegramNotifications(newOrders) {
+  var botToken = sheet1.getRange('A11').getValue();
+  var chatId = sheet1.getRange('A14').getValue();
+  var telegramApiUrl = '[https://api.telegram.org/bot](https://api.telegram.org/bot)' + botToken + '/sendMessage';
+  
+  for (var i = 0; i < newOrders.length; i++) {
+    var order = newOrders[i];
+    var message = '🚀 New Order Received:\n';
+    message += 'Order ID: ' + order[1] + '\n';
+    message += 'Total Price: ' + order[6] + '\n';
+    message += 'Product: ' + order[10] + '\n';
+    
+    UrlFetchApp.fetch(telegramApiUrl, {
+      'method': 'post',
+      'contentType': 'application/json',
+      'payload': JSON.stringify({ 'chat_id': chatId, 'text': message }),
+    });
+  }
+}
+```
+
+## 3. One-Click WhatsApp Messages
+
+This was the client's favorite feature. I created a function that automatically generates a **Click-to-Chat** WhatsApp link for every order. It pre-fills a message with the customer's name, tracking ID, and purchased items.
+
+Now, instead of typing a message manually, the support team simply clicks **"Send Update"** inside the Google Sheet.
+
+```javascript
+// Generate WhatsApp link inside Google Sheets
+var whatsappLink = "https://api.whatsapp.com/send?phone=" 
+  + phoneNumber 
+  + "&text=" 
+  + encodeURIComponent(message);
+
+var hyperLinkFormula = '=HYPERLINK("' + whatsappLink + '", "Click to send")';
+```
+
+## 4. Automated Status Updates with Buttons
+
+Once the WhatsApp link system was working perfectly, I upgraded the workflow by adding **status update buttons** directly inside the Google Sheet. These buttons allowed the support team to update an order’s state with a single click.
+
+### 🔧 How It Works
+- Each button runs a small Apps Script function.
+- When clicked, it updates the order status (like *Packed*, *Shipped*, *Delivered*).
+- It also refreshes the WhatsApp message automatically based on the new status.
+
+```javascript
+function markAsShipped(row) {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  sheet.getRange(row, STATUS_COLUMN).setValue("Shipped");
+  generateWhatsAppMessage(row); // Rebuild message with new status
+}
+```
+
+This eliminated manual errors and made the entire process much faster.
+
+---
+
+## 5. Real-Time Email Alerts
+
+To avoid situations where an order gets delayed or stuck, I added an automated **email notification system**.
+
+Whenever an order stayed in the same status for too long, the sheet triggered an alert:
+
+- "Order pending for 24 hours"
+- "Customer awaiting delivery update"
+- "Tracking ID missing for last 12 hours"
+
+These alerts helped the support team stay proactive.
+
+```javascript
+function sendDelayAlert(orderId, customerName) {
+  MailApp.sendEmail({
+    to: "support@company.com",
+    subject: "Order Delay Alert: " + orderId,
+    body: "Please review the order for customer: " + customerName + "."
+  });
+}
+```
+
+---
+
+## 6. Dashboard with Metrics
+
+I built a small but powerful dashboard within the sheet:
+
+- ⭐ Daily Orders
+- 🚚 Orders Shipped
+- 📦 Orders Pending
+- ⚠️ Delayed Orders
+- 📊 Monthly Fulfillment Rate
+
+Using simple formulas and charts, the client could track everything without logging into any external system.
+
+---
+
+## 7. Final Result
+
+In the end, the client received a **fully automated order management system** that required almost zero manual typing. Features included:
+
+- Click-to-send WhatsApp messages
+- Automated message generation
+- One-click status buttons
+- Delay detection & email alerts
+- Dashboard for complete visibility
+
+This boosted their support team’s speed by **over 60%**.
+
+---
