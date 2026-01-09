@@ -37,7 +37,7 @@ export const allProjects: Project[] = [
     stats: "Saved 10+ hrs/week",
     icon: React.createElement(FileSpreadsheet, { className: "h-6 w-6 text-green-600" }),
     link: "", 
-    github: "https://github.com/avi19042004/shopify-automation",
+    github: "https://github.com/avi19042004/shopify-google-sheets-automation",
   },
   {
     title: "Portfolio v1",
