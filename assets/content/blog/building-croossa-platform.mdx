@@ -1,0 +1,100 @@
+---
+title: "Building Croossa: A Scalable Bus Booking Engine with Next.js & MongoDB"
+date: "2025-01-10"
+description: "How I architected a high-performance travel platform using Next.js for SEO, Razorpay for payments, and MongoDB for real-time revenue analytics."
+tags: ["Next.js", "MongoDB", "Mongoose", "System Design", "Full Stack"]
+---
+
+## The Challenge
+
+Building a travel platform is not just about calling an API. It's about reliability, speed, and visibility. My client needed a custom bus booking solution ("Croossa") that could:
+1.  **Rank High on Google:** Travel is a competitive niche; SEO is non-negotiable.
+2.  **Handle Complex State:** Managing seat selection, passenger details, and hold timers.
+3.  **Provide Business Insights:** The client needed to know exactly how much revenue was made, how many tickets were cancelled, and daily booking volume.
+> **View the Live Project:** [https://www.croossa.com](https://www.croossa.com)
+
+## The Tech Stack Decisions
+
+### 1. Next.js for SEO and Performance
+I chose **Next.js** over standard React for one primary reason: **Server-Side Rendering (SSR)**.
+* **SEO:** Search engines can easily crawl our route pages (e.g., `/bus/surat-to-mumbai`), which is critical for organic traffic.
+* **Speed:** The initial page load is pre-rendered, reducing the "Time to Interactive" for users on slow mobile networks.
+
+### 2. MongoDB & Mongoose for Data Integrity
+Bus booking data is critical. If we lose a Payment ID, we can't process refunds. If we lose a PNR, the user can't board the bus.
+
+I designed a robust Mongoose schema to ensure every booking is traceable. Here is the actual model I used to track the lifecycle of a ticket:
+
+```typescript
+import mongoose, { Schema, Document } from "mongoose";
+
+export interface IBooking extends Document {
+  bookingRefNo: string;      // The temporary order key from the Bus API
+  transportPNR: string;      // The final ticket number for the user
+  razorpayPaymentId: string; // Crucial for tracking refunds
+  amount: number;
+  status: string;            // Tracks: "CONFIRMED", "CANCELLED", "PENDING"
+  createdAt: Date;
+}
+
+const BookingSchema: Schema = new Schema(
+  {
+    bookingRefNo: { type: String, required: true, unique: true },
+    transportPNR: { type: String, required: true },
+    razorpayPaymentId: { type: String, required: true },
+    amount: { type: Number, required: true },
+    status: { type: String, default: "CONFIRMED" },
+  },
+  { timestamps: true }
+);
+
+// Prevent model overwrite in Next.js hot reloading
+const Booking = mongoose.models.Booking || mongoose.model<IBooking>("Booking", BookingSchema);
+
+export default Booking;
+```
+**Why this design works:**
+* **`bookingRefNo` (Unique):** This acts as our idempotent key. It prevents duplicate bookings if the user refreshes the payment page.
+* **`razorpayPaymentId`:** Storing this is mandatory. If a user cancels their ticket later, I use this exact ID to hit the Razorpay Refund API automatically.
+* **`timestamps: true`:** This gives us `createdAt` for free, allowing me to build charts showing "Bookings per Day" without extra logic.
+
+### 3. Analytics with Aggregation Pipelines
+Because the data is structured correctly in MongoDB, building the Admin Dashboard was straightforward. I used MongoDB Aggregation pipelines to calculate real-time metrics.
+
+For example, to get total revenue, I didn't need a complex loop—I just asked the database:
+
+```javascript
+const revenueStats = await Booking.aggregate([
+  { $match: { status: "CONFIRMED" } }, // Filter only valid tickets
+  {
+    $group: {
+      _id: null,
+      totalRevenue: { $sum: "$amount" }, // Sum up the 'amount' field
+      totalBookings: { $count: {} }
+    }
+  }
+]);
+```
+
+## The Workflow: Preventing "Ghost" Bookings
+
+One of the biggest risks in any booking platform is the "Ghost Booking"—where money is deducted from the user's bank account, but the ticket is not generated.
+
+To solve this, I designed a strict state-machine flow:
+
+1.  **Search & Hold:** When the user selects a seat, we lock it temporarily via the bus provider's API to prevent double-booking.
+    
+2.  **Payment Processing:** The user initiates payment via Razorpay. Crucially, we verify the cryptographic signature on the server side (not the client) to ensure the transaction is authentic.
+
+3.  **The Confirmation Transaction:**
+    * Once payment is verified, we call the Bus Operator API to finalize the PNR.
+    * **Crucial Step:** We *immediately* save the `transportPNR` and `razorpayPaymentId` to MongoDB using the schema defined above.
+    * Finally, the status is updated to `CONFIRMED` and the e-ticket is emailed to the user.
+
+## Conclusion
+
+Building Croossa taught me that a "Booking App" is actually a **Data App** disguised as a travel site. 
+
+The frontend provides the user experience, but the real engineering lies in the backend—securely handling payment webhooks, ensuring data consistency with Mongoose schemas, and deriving actionable business insights through MongoDB aggregations.
+
+👉 **Check out the live platform here:** [https://www.croossa.com](https://www.croossa.com)
