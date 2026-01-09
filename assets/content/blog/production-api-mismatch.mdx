@@ -68,25 +68,33 @@ const tradeApiUrl = busApiUrl.replace(
 I assumed the naming convention was consistent between environments.  
 It was not.
 
-<div className="overflow-x-auto my-6">
-  <table className="min-w-full text-left border-collapse border border-gray-300">
+<div className="overflow-x-auto my-6 rounded-lg border border-gray-300 dark:border-gray-700">
+  <table className="min-w-full text-left border-collapse text-sm">
     <thead>
-      <tr className="bg-gray-100">
-        <th className="border p-2">Environment</th>
-        <th className="border p-2">Bus API Endpoint</th>
-        <th className="border p-2">Trade API Endpoint</th>
+      <tr className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+        <th className="border-b border-gray-300 dark:border-gray-700 p-3 font-semibold">Environment</th>
+        <th className="border-b border-gray-300 dark:border-gray-700 p-3 font-semibold">Bus API Endpoint</th>
+        <th className="border-b border-gray-300 dark:border-gray-700 p-3 font-semibold">Trade API Endpoint</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td className="border p-2 font-bold">TEST</td>
-        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/BusHost/...</code></td>
-        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/tradehost/...</code></td>
+    <tbody className="text-gray-700 dark:text-gray-300">
+      <tr className="border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900/50">
+        <td className="p-3 font-bold text-gray-900 dark:text-white">TEST</td>
+        <td className="p-3">
+          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/BusHost/...</code>
+        </td>
+        <td className="p-3">
+          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/tradehost/...</code>
+        </td>
       </tr>
       <tr>
-        <td className="border p-2 font-bold">LIVE</td>
-        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/BusHost/...</code></td>
-        <td className="border p-2"><code className="bg-gray-200 rounded px-1">/Trade/...</code></td>
+        <td className="p-3 font-bold text-gray-900 dark:text-white">LIVE</td>
+        <td className="p-3">
+          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/BusHost/...</code>
+        </td>
+        <td className="p-3">
+          <code className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded px-1.5 py-0.5 font-mono text-xs">/Trade/...</code>
+        </td>
       </tr>
     </tbody>
   </table>
