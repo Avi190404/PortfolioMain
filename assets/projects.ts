@@ -1,14 +1,17 @@
 import { Bus, ShoppingCart, FileSpreadsheet, Zap } from "lucide-react";
 import React from "react";
 
+export type ProjectStatus = "completed" | "in-progress" | "planned";
+
 export type Project = {
   title: string;
   description: string;
   tags: string[];
   stats: string;
   icon: React.ReactNode; 
-  link?: string; 
+  link: string; 
   github: string;
+  status: ProjectStatus;
 };
 
 export const allProjects: Project[] = [
@@ -20,15 +23,17 @@ export const allProjects: Project[] = [
     icon: React.createElement(Bus, { className: "h-6 w-6 text-blue-500" }),
     link: "https://www.croossa.com/",
     github: "https://github.com/croossa/Bus",
+    status: "completed"
   },
   {
     title: "Full Stack E-Commerce",
-    description: "Scalable backend handling 1,000+ products with sub-second queries.",
-    tags: ["React", "Node.js", "JWT", "Tailwind"],
-    stats: "99.9% Secure Auth",
-    icon: React.createElement(ShoppingCart, { className: "h-6 w-6 text-green-500" }),
-    link: "https://your-store.com",
-    github: "https://github.com/avi19042004/ecommerce",
+    description: "Next.js 15 migration with Redux Toolkit and Redis caching architecture.",
+    tags: ["Next.js 15", "Redux Toolkit", "Redis", "Prisma"],
+    stats: "In Development",
+    icon: React.createElement(ShoppingCart, { className: "h-6 w-6 text-orange-500" }),
+    link: "", 
+    github: "https://github.com/Avi190404/ecommerce",
+    status: "in-progress"
   },
   {
     title: "Shopify Order Sync",
@@ -36,8 +41,9 @@ export const allProjects: Project[] = [
     tags: ["Google Apps Script", "Shopify API", "Webhooks"],
     stats: "Saved 10+ hrs/week",
     icon: React.createElement(FileSpreadsheet, { className: "h-6 w-6 text-green-600" }),
-    link: "", 
+    link: "",
     github: "https://github.com/avi19042004/shopify-google-sheets-automation",
+    status: "completed"
   },
   {
     title: "Portfolio v1",
@@ -47,5 +53,6 @@ export const allProjects: Project[] = [
     icon: React.createElement(Zap, { className: "h-6 w-6 text-yellow-500" }),
     link: "https://portfolio.avi-dev.in",
     github: "https://github.com/avi19042004/portfolio",
+    status: "completed"
   },
 ];

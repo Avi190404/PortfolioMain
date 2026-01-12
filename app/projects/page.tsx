@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { allProjects } from "@/assets/projects";
+import { allProjects, Project } from "@/assets/projects";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,25 +11,36 @@ export const metadata: Metadata = {
   description: "A complete archive of my engineering projects, open source tools, and experiments.",
 };
 
+const StatusBadge = ({ status }: { status: Project["status"] }) => {
+  if (status === "in-progress") {
+    return (
+      <Badge variant="outline" className="bg-orange-500/10 text-orange-500 border-orange-500/20 px-2 py-0 h-5 text-[10px]">
+        <span className="relative flex h-1.5 w-1.5 mr-1.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-orange-500"></span>
+        </span>
+        In Progress
+      </Badge>
+    );
+  }
+  return null;
+};
+
 export default function ProjectsPage() {
   return (
     <div className="container mx-auto py-24 px-4 md:px-6">
-      
-      {/* Header Section */}
       <div className="max-w-5xl mx-auto mb-12 space-y-6">
         <Button asChild variant="ghost" className="pl-0 hover:pl-2 transition-all">
-            <Link href="/">
-                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
-            </Link>
+          <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+          </Link>
         </Button>
-        
         <h1 className="text-3xl font-bold tracking-tighter md:text-5xl">All Projects</h1>
         <p className="text-muted-foreground text-lg max-w-[600px]">
           The complete archive of my work in Full Stack Development, Automation, and DevOps.
         </p>
       </div>
 
-      {/* Projects Grid (Shows ALL items) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {allProjects.map((project, index) => (
           <div key={index} className="group relative flex flex-col">
@@ -39,19 +50,21 @@ export default function ProjectsPage() {
                   <div className="p-2 bg-secondary rounded-lg group-hover:bg-primary/10 transition-colors">
                     {project.icon}
                   </div>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    {project.stats}
-                  </Badge>
+                  <div className="flex flex-col items-end gap-1.5">
+                    <StatusBadge status={project.status} />
+                    {/* Hide stats badge for in-progress projects */}
+                    {project.status !== "in-progress" && (
+                      <Badge variant="outline" className="font-mono text-xs">
+                        {project.stats}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-                <CardTitle className="font-bold text-xl">
-                  {project.title}
-                </CardTitle>
+                <CardTitle className="font-bold text-xl">{project.title}</CardTitle>
               </CardHeader>
               
               <CardContent className="flex-grow">
-                <p className="text-muted-foreground mb-6">
-                  {project.description}
-                </p>
+                <p className="text-muted-foreground mb-6">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <Badge key={tag} variant="secondary" className="text-xs bg-secondary/50">
@@ -62,7 +75,7 @@ export default function ProjectsPage() {
               </CardContent>
 
               <CardFooter className="pt-0 gap-2">
-                {project.link ? (
+                {project.link !== "" ? (
                   <>
                     <Button asChild variant="default" size="sm" className="flex-1">
                       <Link href={project.link} target="_blank">
