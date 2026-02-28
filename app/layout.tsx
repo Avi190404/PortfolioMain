@@ -12,27 +12,23 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono" 
 });
 
-// --- UPDATED METADATA SECTION ---
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.avi-dev.in'),
 
   alternates: {
     canonical: '/',
-    languages: {
-      'en-US': '/en-US',
-    },
   },
 
   title: {
-    default: "Avi Patel | Full Stack Developer in Surat | MERN & AI Portfolio",
+    default: "Avi Patel | Full Stack Developer",
     template: "%s | Avi Patel"
   },
 
-  description: "Portfolio of Avi Patel, a Full Stack Developer and Ethical Hacking enthusiast based in Surat, India. Specializing in MERN Stack, Next.js, Deep Learning, and ERP systems.",
+  description: "Official portfolio of Avi Patel, a Full Stack Developer and Automation Engineer specializing in MERN Stack, Next.js, and scaling systems.",
 
   openGraph: {
-    title: "Avi Patel | Full Stack Developer in Surat",
-    description: "Building scalable web apps with Next.js and secure backends. Check out my projects in Deep Learning and Bug Bounty hunting.",
+    title: "Avi Patel | Full Stack Developer",
+    description: "Building scalable web apps with Next.js and secure backends. Explore my projects in MERN and AI Automation.",
     url: 'https://www.avi-dev.in',
     siteName: 'Avi Patel Portfolio',
     locale: 'en_US',
@@ -47,7 +43,7 @@ export const metadata: Metadata = {
     ],
   },
   
-  keywords: ["Full Stack Developer", "MERN Stack", "Next.js", "Deep Learning", "Ethical Hacking", "Surat", "Web Developer", "ERP Systems", "Avi", "Avi Patel"],
+  keywords: ["Avi Patel", "Avi Patel Surat", "Avi Patel Developer", "Full Stack Developer", "MERN Stack", "Next.js", "Automation Engineer", "n8n"],
 };
 
 export default function RootLayout({
@@ -59,7 +55,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground relative`}>
 
-        {/* Google Analytics */}
         <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-L6D3L0KSYB"
@@ -73,7 +68,6 @@ export default function RootLayout({
           `}
         </Script>
         
-        {/* Schema Markup */}
         <Script
           id="json-ld"
           type="application/ld+json"
@@ -84,17 +78,27 @@ export default function RootLayout({
               "name": "Avi Patel",
               "url": "https://www.avi-dev.in",
               "image": "https://www.avi-dev.in/opengraph-image.jpg",
+              "jobTitle": "Full Stack Developer",
+              "alumniOf": {
+                "@type": "CollegeOrUniversity",
+                "name": "Parul University"
+              },
+              "worksFor": [
+                {
+                  "@type": "Organization",
+                  "name": "Todi Rayon Private Limited"
+                },
+                {
+                  "@type": "Organization",
+                  "name": "Freelance"
+                }
+              ],
               "sameAs": [
                 "https://github.com/avi19042004",
                 "https://linkedin.com/in/avi-patel-6170b6238",
                 "https://x.com/AviPatel1297020",
                 "https://www.instagram.com/avi_19044"
               ],
-              "jobTitle": "Full Stack Developer",
-              "worksFor": {
-                "@type": "Organization",
-                "name": "Freelance"
-              },
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Surat",
@@ -111,15 +115,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* GLOBAL BACKGROUND GRID */}
           <div className="fixed inset-0 w-full h-full bg-grid-pattern opacity-[0.05] pointer-events-none z-[-1]" />
-          
           <Navbar />
-          
           <main className="min-h-screen flex flex-col pt-24 relative">
             {children}
           </main>
-
           <Footer />
         </ThemeProvider>
       </body>

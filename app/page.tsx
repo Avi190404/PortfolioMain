@@ -4,6 +4,12 @@ import { Experience } from "@/components/experience";
 import { Projects } from "@/components/projects";
 import { Contact } from "@/components/contact";
 import { Skills } from "@/components/skills";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Avi Patel",
+  description: "Official portfolio of Avi Patel. Full Stack Developer & Automation Engineer specializing in MERN, Next.js, and high-performance system architecture.",
+};
 
 export default function Home() {
   return (
